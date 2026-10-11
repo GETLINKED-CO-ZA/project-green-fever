@@ -1,0 +1,12 @@
+{
+  "name": "project-green-fever",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Project Green Fever public-space reporting form (LINK)",
+  "engines": { "node": ">=20" },
+  "scripts": { "test": "node test/smoke.js" },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "busboy": "^1.6.0"
+  }
+}

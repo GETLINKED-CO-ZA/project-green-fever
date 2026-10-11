@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Green Fever | Report a public space issue</title>
+<style>
+:root{
+  --gold:#D4AF37; --green:#1B7B61; --green-dark:#145c48; --burgundy:#7B1C1C;
+  --ink:#1d2421; --muted:#5d655f; --line:#d9d5c8; --bg:#faf8f3; --card:#fff; --tint:#fbf9f0;
+  --serif:Georgia,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--sans)}
+.wrap{max-width:640px;margin:0 auto;padding:clamp(16px,5vw,56px) 16px 40px}
+.card{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:6px;padding:clamp(22px,5vw,44px);box-shadow:0 1px 2px rgba(29,36,33,.06)}
+.brand{margin:0;font-size:.8rem;font-weight:600;color:var(--green)}
+h1{margin:6px 0 0;font:400 clamp(1.7rem,6vw,2.3rem)/1.15 var(--serif);letter-spacing:.14em}
+.lede{margin:14px 0 0;color:var(--muted);font-size:1.05rem;max-width:46ch}
+.points{margin:18px 0 0;padding:0;list-style:none;display:grid;gap:6px;font-size:.95rem;color:var(--ink)}
+.points li{padding-left:22px;position:relative}
+.points li::before{content:"";position:absolute;left:2px;top:.62em;width:8px;height:8px;border-radius:50%;background:var(--green)}
+h2{margin:0 0 4px;font:400 1.35rem/1.25 var(--serif)}
+section{margin-top:36px;padding-top:28px;border-top:1px solid var(--line)}
+.req-note{font-size:.85rem;color:var(--muted);margin:0 0 20px}
+.field{margin:0 0 22px}
+label,.label{display:block;font-weight:600;font-size:.95rem;margin-bottom:6px}
+.opt{font-weight:400;color:var(--muted);font-size:.85rem;margin-left:6px}
+.hint{margin:6px 0 0;font-size:.85rem;color:var(--muted)}
+input[type=text],select,textarea{width:100%;font:inherit;color:var(--ink);background:#fff;border:1px solid #bdb8a8;border-radius:4px;padding:12px 14px;min-height:48px}
+textarea{min-height:120px;resize:vertical}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 20px) 21px,calc(100% - 15px) 21px;background-size:5px 5px;background-repeat:no-repeat;padding-right:40px}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,.drop:focus-within,a:focus-visible{outline:3px solid var(--green);outline-offset:2px;border-color:var(--green)}
+[aria-invalid=true]{border-color:var(--burgundy)!important;box-shadow:inset 3px 0 0 var(--burgundy)}
+.error{margin:6px 0 0;font-size:.88rem;font-weight:600;color:var(--burgundy)}
+.error:empty{display:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hp{position:absolute;left:-9999px;height:0;overflow:hidden}
+.btn-ghost{font:inherit;font-size:.92rem;font-weight:600;color:var(--green);background:#fff;border:1px solid var(--green);border-radius:4px;padding:10px 16px;min-height:44px;cursor:pointer}
+.btn-ghost:hover{background:#eef6f3}
+.btn-ghost:disabled{opacity:.6;cursor:default}
+.gps{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px}
+.chip{display:inline-flex;align-items:center;gap:8px;font-size:.9rem;background:#eef6f3;border:1px solid #b9d9cf;border-radius:4px;padding:6px 10px}
+.chip button{font:inherit;color:var(--burgundy);background:none;border:0;text-decoration:underline;cursor:pointer;padding:2px}
+.drop{border:1.5px dashed #a9a38f;border-radius:6px;background:var(--tint);padding:20px;text-align:center;transition:background .15s}
+.drop.over{background:#eef6f3;border-color:var(--green)}
+.drop label{display:inline-block;margin:0;cursor:pointer}
+.drop .pick{display:inline-block;color:var(--green);font-weight:700;text-decoration:underline}
+.drop small{display:block;margin-top:4px;color:var(--muted);font-size:.85rem}
+.preview{display:flex;align-items:center;gap:12px;margin-top:12px;text-align:left}
+.preview img{width:64px;height:64px;object-fit:cover;border-radius:4px;border:1px solid var(--line)}
+.preview .meta{flex:1;min-width:0;font-size:.9rem;overflow-wrap:anywhere}
+.notice{background:var(--tint);border-left:3px solid var(--gold);padding:14px 16px;font-size:.92rem;color:var(--ink);margin:0 0 20px;border-radius:0 4px 4px 0}
+.check{display:flex;gap:12px;align-items:flex-start;margin:0 0 22px}
+.check input{width:22px;height:22px;margin-top:2px;accent-color:var(--green);flex:none}
+.check label{margin:0;font-weight:400}
+.submit{width:100%;min-height:54px;font:inherit;font-weight:700;letter-spacing:.14em;color:#fff;background:var(--green);border:0;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}
+.submit:hover{background:var(--green-dark)}
+.submit:disabled{background:#6f9a8d;cursor:progress}
+.spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:s .8s linear infinite}
+@keyframes s{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:2.4s}.drop{transition:none}}
+.banner{border:1px solid var(--burgundy);border-left-width:4px;background:#fdf4f4;color:var(--ink);border-radius:4px;padding:14px 16px;margin:0 0 24px}
+.banner p{margin:0 0 10px;font-weight:600}
+.banner p:last-of-type{margin-bottom:0}
+.banner .btn-ghost{margin-top:12px;color:var(--burgundy);border-color:var(--burgundy)}
+.success h2{font-size:1.7rem}
+.ref{font:700 clamp(1.6rem,7vw,2.2rem)/1.2 var(--serif);color:var(--burgundy);margin:14px 0 4px;overflow-wrap:anywhere}
+.success p{max-width:52ch}
+.foot{margin:22px 0 0;text-align:center;font-size:.82rem;color:var(--muted)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="card">
+    <header>
+      <!-- Logo slot: add the official LINK logo here only once the asset is supplied. -->
+      <p class="brand">A LINK initiative</p>
+      <h1>PROJECT GREEN FEVER</h1>
+      <p class="lede">Help us identify areas that need attention.</p>
+      <ul class="points">
+        <li>Report a problem affecting a public space.</li>
+        <li>Add the location and a photo if you can.</li>
+        <li>LINK reviews every report. Submitting does not guarantee the issue will be resolved.</li>
+      </ul>
+    </header>
+
+    <form id="form" novalidate>
+      <section aria-labelledby="h-a">
+        <h2 id="h-a">What needs attention?</h2>
+        <p class="req-note"><span aria-hidden="true">*</span> Required. You do not need to give your name to report an issue.</p>
+
+        <div id="banner" class="banner" role="alert" tabindex="-1" hidden>
+          <p id="banner-text"></p>
+          <button type="button" class="btn-ghost" id="retry" hidden>Try again</button>
+        </div>
+
+        <div class="field">
+          <label for="category">Type of issue <span aria-hidden="true">*</span></label>
+          <select id="category" name="category" required aria-describedby="err-category">
+            <option value="">Choose one</option>
+            <option>Litter</option>
+            <option>Illegal dumping</option>
+            <option>Damaged public infrastructure</option>
+            <option>Neglected public space</option>
+            <option>Overgrown vegetation</option>
+            <option>Other</option>
+          </select>
+          <p class="error" id="err-category"></p>
+        </div>
+
+        <div class="field">
+          <label for="description">Description <span aria-hidden="true">*</span></label>
+          <textarea id="description" name="description" required maxlength="2000" aria-describedby="hint-description err-description"></textarea>
+          <p class="hint" id="hint-description">What did you see, and how long has it been there?</p>
+          <p class="error" id="err-description"></p>
+        </div>
+
+        <div class="field">
+          <label for="location">Location <span aria-hidden="true">*</span></label>
+          <input type="text" id="location" name="location" maxlength="300" autocomplete="street-address" aria-describedby="hint-location err-location">
+          <p class="hint" id="hint-location">A street, landmark or area is enough. No exact address? Describe what is nearby, or share your current location.</p>
+          <div class="gps">
+            <button type="button" class="btn-ghost" id="gps-btn">Use my current location</button>
+            <span class="chip" id="gps-chip" hidden><span id="gps-text">Location added</span> <button type="button" id="gps-clear">Remove</button></span>
+          </div>
+          <p class="hint" id="gps-status" role="status" aria-live="polite">Optional. Your location is only recorded if you choose this.</p>
+          <p class="error" id="err-location"></p>
+          <input type="hidden" name="lat" id="lat"><input type="hidden" name="lng" id="lng">
+        </div>
+
+        <div class="field">
+          <span class="label" id="photo-title">Photo <span class="opt">optional</span></span>
+          <div class="drop" id="drop">
+            <input type="file" id="photo" name="photo" class="sr" accept="image/jpeg,image/png,image/webp" aria-describedby="hint-photo err-photo">
+            <label for="photo"><span class="pick">Choose a photo</span> or drop it here</label>
+            <small id="hint-photo">JPG, PNG or WebP. Up to 4 MB.</small>
+            <div class="preview" id="preview" hidden>
+              <img id="thumb" alt="Preview of the selected photo">
+              <div class="meta"><span id="file-name"></span><br><span id="file-size"></span></div>
+              <button type="button" class="btn-ghost" id="file-clear">Remove</button>
+            </div>
+          </div>
+          <p class="error" id="err-photo"></p>
+        </div>
+
+        <div class="field">
+          <label for="name">Your name <span class="opt">optional</span></label>
+          <input type="text" id="name" name="name" maxlength="100" autocomplete="name" aria-describedby="err-name">
+          <p class="error" id="err-name"></p>
+        </div>
+
+        <div class="field">
+          <label for="contact">Email or phone number <span class="opt">optional</span></label>
+          <input type="text" id="contact" name="contact" maxlength="150" autocomplete="email" aria-describedby="hint-contact err-contact">
+          <p class="hint" id="hint-contact">Only add this if you want to receive updates. We will use it to confirm your report and follow up on it, nothing else.</p>
+          <p class="error" id="err-contact"></p>
+        </div>
+
+        <div class="hp" aria-hidden="true"><label>Leave this field empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+        <div id="turnstile"></div>
+      </section>
+
+      <section aria-labelledby="h-b">
+        <h2 id="h-b">Review and submit</h2>
+        <p class="notice">LINK will use the information you provide to review, manage and follow up on this report. Reports, photos, names and locations are not published. For spam protection we keep a scrambled (hashed) version of your network address, not the address itself.</p>
+        <div class="check">
+          <input type="checkbox" id="accuracy" name="accuracy" aria-describedby="err-accuracy">
+          <label for="accuracy">The information I have submitted is accurate to the best of my knowledge. <span aria-hidden="true">*</span></label>
+        </div>
+        <p class="error" id="err-accuracy" style="margin:-14px 0 20px"></p>
+        <button type="submit" class="submit" id="submit"><span class="spin" hidden></span><span id="submit-label">SUBMIT REPORT</span></button>
+      </section>
+    </form>
+
+    <div id="success" class="success" hidden>
+      <h2 id="success-title" tabindex="-1">Your report has been received.</h2>
+      <p>Your reference number</p>
+      <div class="ref" id="ref"></div>
+      <button type="button" class="btn-ghost" id="copy">Copy reference</button>
+      <p id="success-note" style="margin-top:20px"></p>
+      <p>LINK will review the information and decide the next step. Receiving a report does not guarantee that the issue will be resolved. Thank you for helping us care for our shared spaces.</p>
+      <button type="button" class="btn-ghost" id="again">Report another issue</button>
+    </div>
+  </div>
+  <p class="foot">Project Green Fever &middot; GET LINK (PTY) LTD</p>
+</main>
+
+<script>
+(function(){
+  'use strict';
+  var CFG = { endpoint:'/api/submit', maxBytes:4*1024*1024, types:['image/jpeg','image/png','image/webp'],
+              turnstileSiteKey:'' /* optional: Cloudflare Turnstile site key (public) */ };
+  var $ = function(id){ return document.getElementById(id); };
+  var form=$('form'), el=function(n){ return form.elements[n]; };
+  var loadedAt=Date.now(), busy=false, previewUrl=null;
+  var newKey=function(){ return (window.crypto&&crypto.randomUUID)?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16);}); };
+  var key=newKey();
+
+  if(CFG.turnstileSiteKey){
+    var t=$('turnstile'); t.className='cf-turnstile'; t.setAttribute('data-sitekey',CFG.turnstileSiteKey);
+    var s=document.createElement('script'); s.src='https://challenges.cloudflare.com/turnstile/v0/api.js'; s.async=true; document.head.appendChild(s);
+  }
+
+  /* ---------- errors ---------- */
+  function setErr(name,msg){
+    var p=$('err-'+name), f=el(name); if(p) p.textContent=msg||'';
+    if(f) { if(msg) f.setAttribute('aria-invalid','true'); else f.removeAttribute('aria-invalid'); }
+  }
+  function clearErrs(){ ['category','description','location','photo','name','contact','accuracy'].forEach(function(n){ setErr(n,''); }); }
+  function banner(msg,retry){ $('banner-text').textContent=msg; $('retry').hidden=!retry; $('banner').hidden=false; $('banner').focus(); }
+  function hideBanner(){ $('banner').hidden=true; }
+  function showErrors(errs){
+    var order=['category','description','location','photo','name','contact','accuracy'], first=null;
+    order.forEach(function(n){ setErr(n,errs[n]); if(errs[n]&&!first) first=n; });
+    if(errs.form) banner(errs.form,false);
+    else if(first){ hideBanner(); var f=el(first); if(f&&f.focus) f.focus(); }
+  }
+  form.addEventListener('input',function(e){ if(e.target&&e.target.name) setErr(e.target.name,''); });
+  form.addEventListener('change',function(e){ if(e.target&&e.target.name) setErr(e.target.name,''); });
+
+  function validate(){
+    var e={};
+    if(!el('category').value) e.category='Please choose the type of issue.';
+    var d=el('description').value.trim();
+    if(d.length<10) e.description='Please describe what you saw (at least 10 characters).';
+    if(!el('location').value.trim() && !(el('lat').value&&el('lng').value)) e.location='Enter a street, landmark or area, or share your current location.';
+    var c=el('contact').value.trim();
+    if(c){ if(c.indexOf('@')>-1){ if(!/^[^\s@<>"',;]+@[^\s@<>"',;]+\.[^\s@<>"',;]{2,}$/.test(c)) e.contact='Enter a valid email address or phone number.'; }
+           else if(!/^\d{7,15}$/.test(c.replace(/[\s()+\-.]/g,''))) e.contact='Enter a valid email address or phone number.'; }
+    var fe=fileError(el('photo').files[0]); if(fe) e.photo=fe;
+    if(!el('accuracy').checked) e.accuracy='Please confirm before submitting.';
+    return e;
+  }
+
+  /* ---------- photo ---------- */
+  function fileError(f){
+    if(!f) return '';
+    if(CFG.types.indexOf(f.type)<0) return 'Please choose a JPG, PNG or WebP image.';
+    if(f.size>CFG.maxBytes) return 'This photo is larger than 4 MB. Please choose a smaller one.';
+    return '';
+  }
+  function clearFile(){
+    el('photo').value=''; $('preview').hidden=true;
+    if(previewUrl){ URL.revokeObjectURL(previewUrl); previewUrl=null; }
+  }
+  function handleFile(f){
+    if(!f){ clearFile(); return; }
+    var err=fileError(f);
+    if(err){ clearFile(); setErr('photo',err); return; }
+    setErr('photo','');
+    if(previewUrl) URL.revokeObjectURL(previewUrl);
+    previewUrl=URL.createObjectURL(f); $('thumb').src=previewUrl;
+    $('file-name').textContent=f.name; $('file-size').textContent=(f.size/1048576).toFixed(2)+' MB';
+    $('preview').hidden=false;
+  }
+  el('photo').addEventListener('change',function(){ handleFile(this.files[0]); });
+  $('file-clear').addEventListener('click',function(){ clearFile(); setErr('photo',''); el('photo').focus(); });
+  var drop=$('drop');
+  ['dragenter','dragover'].forEach(function(ev){ drop.addEventListener(ev,function(e){ e.preventDefault(); drop.classList.add('over'); }); });
+  ['dragleave','drop'].forEach(function(ev){ drop.addEventListener(ev,function(e){ e.preventDefault(); drop.classList.remove('over'); }); });
+  drop.addEventListener('drop',function(e){
+    var f=e.dataTransfer&&e.dataTransfer.files[0]; if(!f) return;
+    try{ var dt=new DataTransfer(); dt.items.add(f); el('photo').files=dt.files; }catch(_){}
+    handleFile(f);
+  });
+
+  /* ---------- optional GPS (only on explicit click) ---------- */
+  function gpsMsg(m){ $('gps-status').textContent=m; }
+  $('gps-btn').addEventListener('click',function(){
+    if(!navigator.geolocation){ gpsMsg('Location sharing is not available on this device. Please describe the location instead.'); return; }
+    var b=this; b.disabled=true; gpsMsg('Finding your location…');
+    navigator.geolocation.getCurrentPosition(function(p){
+      el('lat').value=p.coords.latitude.toFixed(5); el('lng').value=p.coords.longitude.toFixed(5);
+      $('gps-text').textContent='Location added (about '+Math.round(p.coords.accuracy)+' m accuracy)';
+      $('gps-chip').hidden=false; b.hidden=true; b.disabled=false; setErr('location',''); gpsMsg('Your current location will be sent with this report.');
+    },function(){
+      b.disabled=false; gpsMsg('We could not get your location. Please describe it above instead.');
+    },{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+  });
+  $('gps-clear').addEventListener('click',function(){
+    el('lat').value=''; el('lng').value=''; $('gps-chip').hidden=true; $('gps-btn').hidden=false; $('gps-btn').focus();
+    gpsMsg('Optional. Your location is only recorded if you choose this.');
+  });
+
+  /* ---------- submit ---------- */
+  function setBusy(b){
+    busy=b; var s=$('submit'); s.disabled=b; s.setAttribute('aria-busy',b?'true':'false');
+    s.querySelector('.spin').hidden=!b; $('submit-label').textContent=b?'SENDING…':'SUBMIT REPORT';
+    $('retry').disabled=b;
+  }
+  form.addEventListener('submit',function(ev){
+    ev.preventDefault();
+    if(busy) return;
+    hideBanner(); clearErrs();
+    var errs=validate(); if(Object.keys(errs).length){ showErrors(errs); return; }
+    setBusy(true);
+    var fd=new FormData(form);
+    fd.set('idempotency_key',key); fd.set('elapsed',String(Date.now()-loadedAt));
+    var ctrl=new AbortController(), timer=setTimeout(function(){ ctrl.abort(); },45000);
+    fetch(CFG.endpoint,{method:'POST',body:fd,signal:ctrl.signal}).then(function(res){
+      return res.json().catch(function(){return null;}).then(function(data){ return {res:res,data:data}; });
+    }).then(function(o){
+      var res=o.res, data=o.data;
+      if(res.ok&&data&&data.ok&&data.reference){ showSuccess(data); return; }
+      if(res.status===422&&data&&data.errors){ showErrors(data.errors); return; }
+      if(res.status===429) banner('Too many reports have been sent from this connection. Please try again later. Your entries are kept.',true);
+      else if(res.status===400) banner('Your report could not be accepted. Please check your entries and try again.',true);
+      else banner('Your report was not submitted. Nothing has been lost: your entries are still here. If you try again, the report will not be recorded twice.',true);
+    }).catch(function(){
+      banner('Your report was not submitted because the connection failed or timed out. Your entries are still here. If you try again, the report will not be recorded twice.',true);
+    }).then(function(){ clearTimeout(timer); setBusy(false); });
+  });
+  $('retry').addEventListener('click',function(){ form.requestSubmit(); });
+
+  /* ---------- success ---------- */
+  function showSuccess(data){
+    $('ref').textContent=data.reference;
+    var note='';
+    if(data.confirmation==='sent') note='A confirmation has been sent to your email address.';
+    else if(data.confirmation==='failed') note='We could not send a confirmation email, so please keep this reference number.';
+    else if(data.confirmation==='not_resent') note='This report was already recorded. Please keep this reference number.';
+    else note='Please keep this reference number. You did not give an email address, so we will not send a confirmation.';
+    $('success-note').textContent=note;
+    form.hidden=true; document.querySelector('header').hidden=true; $('success').hidden=false;
+    $('success-title').focus(); window.scrollTo(0,0);
+  }
+  $('copy').addEventListener('click',function(){
+    var b=this, t=$('ref').textContent;
+    (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){ b.textContent='Copied'; }).catch(function(){ b.textContent='Select and copy the number above'; });
+  });
+  $('again').addEventListener('click',function(){
+    form.reset(); clearFile(); clearErrs(); hideBanner();
+    el('lat').value=''; el('lng').value=''; $('gps-chip').hidden=true; $('gps-btn').hidden=false;
+    key=newKey(); loadedAt=Date.now(); $('copy').textContent='Copy reference';
+    $('success').hidden=true; form.hidden=false; document.querySelector('header').hidden=false; window.scrollTo(0,0);
+  });
+})();
+</script>
+</body>
+</html>
